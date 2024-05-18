@@ -1560,36 +1560,15 @@ async function sendFile(req, res) {
   `,
   };
 
-  await getPdf(file, options, data, fileName);
-  console.log("3");
+  try {
+    await getPdf(file, options, data, fileName);
+    console.log("3");
 
-  await sendMessages(fileName, data);
-  console.log("6");
-
-  // await new Promise(async (resolve, reject) => {
-  //   await new Promise(async (res, rej) => {
-  //     bd.forEach(async (chatId) => {
-  //       await bot
-  //         .sendDocument(chatId, `${fileName}pdf`)
-  //         .catch((error) => reject());
-  //       await bot
-  //         .sendMessage(
-  //           chatId,
-  //           `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
-  //         )
-  //         .catch((error) => reject());
-  //     });
-  //     resolve();
-  //   });
-
-  //   console.log("файл отправлен!");
-  //   resolve();
-  // });
-
-  // fs.unlink(`${fileName}.pdf`, (err) => {
-  //   console.log("файл удален");
-  //   if (err) throw err; // не удалось удалить файл
-  // });
+    await sendMessages(fileName, data);
+    console.log("6");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 app.post("/saveFile", (req, res) => sendFile(req, res));
