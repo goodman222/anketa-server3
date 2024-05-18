@@ -232,7 +232,7 @@ async function sendMessages(fileName, data) {
         )
         .catch((error) => reject());
     });
-
+    console.log("4");
     // console.log("Отправка после цикла");
     resolve();
   });
@@ -1563,6 +1563,7 @@ async function sendFile(req, res) {
   await getPdf(file, options, data, fileName);
 
   await sendMessages(fileName, data);
+  console.log("5");
 
   // await new Promise(async (resolve, reject) => {
   //   await new Promise(async (res, rej) => {
