@@ -233,7 +233,6 @@ async function sendMessages(fileName, data) {
         .catch((error) => reject());
     });
     console.log("5");
-    // console.log("Отправка после цикла");
     resolve();
   });
 }
