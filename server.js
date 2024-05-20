@@ -1581,8 +1581,9 @@ async function sendFile(req, res) {
     console.log("3");
     console.log(setPdfResult);
 
-    await sendMessages(fileName, data);
+    let sendMessagesResult = await sendMessages(fileName, data);
     console.log("6");
+    console.log(sendMessagesResult);
   } catch (error) {
     console.log(error);
   }
