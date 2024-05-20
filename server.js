@@ -222,9 +222,11 @@ async function sendMessages(fileName, data) {
     // console.log("Отправка файлов");
     await bd.forEach(async (chatId) => {
       // console.log("Отправка в цикле");
-      await bot
+      let sendDocResult = await bot
         .sendDocument(chatId, `${fileName}.pdf`)
         .catch((error) => reject());
+      console.log('документ отправлен');
+      console.log(sendDocResult);
       await bot
         .sendMessage(
           chatId,
