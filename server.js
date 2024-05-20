@@ -1566,6 +1566,7 @@ async function sendFile(req, res) {
   }
 
   try {
+    console.log('7');
     fs.unlink(`${fileName}.pdf`, (err) => {
         if (err) throw err; // не удалось удалить файл
       });
