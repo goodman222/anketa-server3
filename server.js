@@ -221,6 +221,7 @@ async function sendMessages(fileName, data) {
     console.log("4");
     // console.log("Отправка файлов");
     
+    console.log(bd);
 
     await Promise.all(bd.forEach(async (chatId) => {
       // console.log("Отправка в цикле");
