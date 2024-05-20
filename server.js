@@ -1440,8 +1440,8 @@ async function sendFile(req, res) {
             Александру Николаевичу Котову
           </p>
           <p style="align-self: flex-start; margin-bottom: 0px">
-            от «${data.personal.lastName.value} ${data.personal.name.value[0]}.
-            ${data.personal.surname.value[0]}.»
+            от ${data.personal.lastName.value} ${data.personal.name.value[0]}.
+            ${data.personal.surname.value[0]}.
           </p>
           <p style="align-self: flex-start; margin-bottom: 0px">
            Паспорт серия ${data.personal.passSeries.value} номер ${data.personal.passNumber.value}
@@ -1555,36 +1555,36 @@ async function sendFile(req, res) {
   `,
   };
 
-  let promise = new Promise(async (resolve, reject) => {
-    try {
-      await getPdf(file, options, data, fileName);
-      console.log("3");
+  // let promise = new Promise(async (resolve, reject) => {
+  //   try {
+  //     await getPdf(file, options, data, fileName);
+  //     console.log("3");
   
-      await sendMessages(fileName, data);
-      console.log("6");
-    } catch (error) {
-      console.log(error);
-    }
-    resolve();
-  });
+  //     await sendMessages(fileName, data);
+  //     console.log("6");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   resolve();
+  // });
 
-  promise.then(()=>{
-    fs.promises.unlink(`${fileName}.pdf`, (err) => {
-      console.log('8');
-        if (err) throw err; // не удалось удалить файл
-      });
-  }, console.log(error));
+  // promise.then(()=>{
+  //   fs.promises.unlink(`${fileName}.pdf`, (err) => {
+  //     console.log('8');
+  //       if (err) throw err; // не удалось удалить файл
+  //     });
+  // }, console.log(error));
 
 
-  // try {
-  //   await getPdf(file, options, data, fileName);
-  //   console.log("3");
+  try {
+    await getPdf(file, options, data, fileName);
+    console.log("3");
 
-  //   await sendMessages(fileName, data);
-  //   console.log("6");
-  // } catch (error) {
-  //   console.log(error);
-  // }
+    await sendMessages(fileName, data);
+    console.log("6");
+  } catch (error) {
+    console.log(error);
+  }
 
   // try {
   //   console.log('7');
