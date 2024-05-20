@@ -224,11 +224,10 @@ async function sendMessages(fileName, data) {
     let loopPromise = new Promise(async (res, rej) => {
       await bd.forEach(async (chatId) => {
         // console.log("Отправка в цикле");
-        let sendDocResult = await bot
+        await bot
           .sendDocument(chatId, `${fileName}.pdf`)
           .catch((error) => reject());
         console.log('документ отправлен');
-        console.log(sendDocResult);
         await bot
           .sendMessage(
             chatId,
@@ -1612,15 +1611,15 @@ async function sendFile(req, res) {
     console.log(error);
   }
 
-  // try {
-  //   console.log('7');
-  //   await fs.promises.unlink(`${fileName}.pdf`, (err) => {
-  //     console.log('8');
-  //       if (err) throw err; // не удалось удалить файл
-  //     });
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  try {
+    console.log('7');
+    await fs.promises.unlink(`${fileName}.pdf`, (err) => {
+      console.log('8');
+        if (err) throw err; // не удалось удалить файл
+      });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 app.post("/saveFile", (req, res) => sendFile(req, res));
