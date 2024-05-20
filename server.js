@@ -220,20 +220,42 @@ async function sendMessages(fileName, data) {
   return new Promise(async (resolve, reject) => {
     console.log("4");
     // console.log("Отправка файлов");
-    await bd.forEach(async (chatId) => {
-      // console.log("Отправка в цикле");
-      let sendDocResult = await bot
-        .sendDocument(chatId, `${fileName}.pdf`)
-        .catch((error) => reject());
-      console.log('документ отправлен');
-      console.log(sendDocResult);
-      await bot
-        .sendMessage(
-          chatId,
-          `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
-        )
-        .catch((error) => reject());
-    });
+    
+    let loopPromise = new Promise(async (res, rej) => {
+      await bd.forEach(async (chatId) => {
+        // console.log("Отправка в цикле");
+        let sendDocResult = await bot
+          .sendDocument(chatId, `${fileName}.pdf`)
+          .catch((error) => reject());
+        console.log('документ отправлен');
+        console.log(sendDocResult);
+        await bot
+          .sendMessage(
+            chatId,
+            `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
+          )
+          .catch((error) => reject());
+      });
+      res();
+    })
+
+
+    await loopPromise;
+
+    // await bd.forEach(async (chatId) => {
+    //   // console.log("Отправка в цикле");
+    //   let sendDocResult = await bot
+    //     .sendDocument(chatId, `${fileName}.pdf`)
+    //     .catch((error) => reject());
+    //   console.log('документ отправлен');
+    //   console.log(sendDocResult);
+    //   await bot
+    //     .sendMessage(
+    //       chatId,
+    //       `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
+    //     )
+    //     .catch((error) => reject());
+    // });
     console.log("5");
     resolve();
   });
