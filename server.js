@@ -1426,7 +1426,7 @@ async function sendFile(req, res) {
       >
         <div style="width: 100%">
           <div style="width: 100%; display: flex; flex-direction: column">
-          <div style="align-self: flex-end; width: 40%; display: flex; flex-direction: column;">
+          <div style="align-self: flex-end; width: 50%; display: flex; flex-direction: column;">
           <p
             style="
               text-align: left;
@@ -1561,6 +1561,14 @@ async function sendFile(req, res) {
 
     await sendMessages(fileName, data);
     console.log("6");
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    fs.unlink(`${fileName}.docx`, (err) => {
+        if (err) throw err; // не удалось удалить файл
+      });
   } catch (error) {
     console.log(error);
   }
