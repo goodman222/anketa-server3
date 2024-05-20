@@ -1426,31 +1426,27 @@ async function sendFile(req, res) {
       >
         <div style="width: 100%">
           <div style="width: 100%; display: flex; flex-direction: column">
-            <p
-              style="
-                text-align: right;
-                width: 100%;
-                font-weight: bold;
-                font-size: 11pt;
-              "
-            >
-              Генеральному директору<br />
-              АО «Сибирская Сервисная Компания»<br />
-              Александру Николаевичу Котову
-            </p>
-            <p style="align-self: flex-end; margin-bottom: 0px">
-              от ______________________
-            </p>
-            <p style="align-self: flex-end; margin-bottom: 0px">
-              _________________________
-            </p>
-            <p style="align-self: flex-end; margin-bottom: 0px">
-              _________________________
-            </p>
-            <p style="align-self: flex-end; margin-bottom: 0px">
-              _________________________
-            </p>
-            <p style="align-self: flex-end">(ФИО, паспортные данные)</p>
+          <div style="align-self: flex-end; width: 40%; display: flex; flex-direction: column;">
+          <p
+            style="
+              text-align: left;
+              width: 100%;
+              font-weight: bold;
+              font-size: 11pt;
+            "
+          >
+            Генеральному директору<br />
+            АО «Сибирская Сервисная Компания»<br />
+            Александру Николаевичу Котову
+          </p>
+          <p style="align-self: flex-start; margin-bottom: 0px">
+            от «${data.personal.lastName.value} ${data.personal.name.value[0]}.
+            ${data.personal.surname.value[0]}.»
+          </p>
+          <p style="align-self: flex-start; margin-bottom: 0px">
+           Паспорт серия ${data.personal.passSeries.value} номер ${data.personal.passNumber.value}
+          </p>
+        </div>
   
             <h1 style="font-weight: bold; font-size: 11pt; align-self: center">
               СОГЛАСИЕ
