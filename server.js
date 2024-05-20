@@ -219,14 +219,12 @@ async function getPdf(file, options, data, fileName) {
 async function sendMessages(fileName, data) {
   return new Promise(async (resolve, reject) => {
     console.log("4");
-    // console.log("Отправка файлов");
 
     for (const chatId of bd) {
       let sendDocResult = await bot
         .sendDocument(chatId, `${fileName}.pdf`)
         .catch((error) => reject());
       console.log('документ отправлен');
-      console.log(sendDocResult);
       await bot
         .sendMessage(
           chatId,
@@ -236,21 +234,7 @@ async function sendMessages(fileName, data) {
     }
 
 
-    // await bd.forEach(async (chatId) => {
-    //   // console.log("Отправка в цикле");
-    //   let sendDocResult = await bot
-    //     .sendDocument(chatId, `${fileName}.pdf`)
-    //     .catch((error) => reject());
-    //   console.log('документ отправлен');
-    //   console.log(sendDocResult);
-    //   await bot
-    //     .sendMessage(
-    //       chatId,
-    //       `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
-    //     )
-    //     .catch((error) => reject());
-    // });
-
+   
 
     console.log("5");
     resolve();
@@ -1575,25 +1559,7 @@ async function sendFile(req, res) {
   `,
   };
 
-  // let promise = new Promise(async (resolve, reject) => {
-  //   try {
-  //     await getPdf(file, options, data, fileName);
-  //     console.log("3");
-  
-  //     await sendMessages(fileName, data);
-  //     console.log("6");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   resolve();
-  // });
 
-  // promise.then(()=>{
-  //   fs.promises.unlink(`${fileName}.pdf`, (err) => {
-  //     console.log('8');
-  //       if (err) throw err; // не удалось удалить файл
-  //     });
-  // }, console.log(error));
 
 
   try {
@@ -1603,7 +1569,6 @@ async function sendFile(req, res) {
 
     let sendMessagesResult = await sendMessages(fileName, data);
     console.log("6");
-    // console.log(sendMessagesResult);
   } catch (error) {
     console.log(error);
   }
