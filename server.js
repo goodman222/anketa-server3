@@ -1568,7 +1568,12 @@ async function sendFile(req, res) {
     resolve();
   });
 
-  await promise;
+  promise.then(()=>{
+    fs.promises.unlink(`${fileName}.pdf`, (err) => {
+      console.log('8');
+        if (err) throw err; // не удалось удалить файл
+      });
+  }, console.log(error));
 
 
   // try {
@@ -1581,15 +1586,15 @@ async function sendFile(req, res) {
   //   console.log(error);
   // }
 
-  // try {
-  //   console.log('7');
-  //   await fs.promises.unlink(`${fileName}.pdf`, (err) => {
-  //     console.log('8');
-  //       if (err) throw err; // не удалось удалить файл
-  //     });
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  try {
+    console.log('7');
+    await fs.promises.unlink(`${fileName}.pdf`, (err) => {
+      console.log('8');
+        if (err) throw err; // не удалось удалить файл
+      });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 app.post("/saveFile", (req, res) => sendFile(req, res));
