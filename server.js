@@ -221,24 +221,21 @@ async function sendMessages(fileName, data) {
     console.log("4");
     // console.log("Отправка файлов");
     
-    async function forEachWrap() {
-      await asyncForEach(bd, async (chatId) => {
-        await bot
-          .sendDocument(chatId, `${fileName}.pdf`)
-          .catch((error) => reject());
-        console.log('документ отправлен');
+
+    await Promise.all(bd.forEach(async (chatId) => {
+      // console.log("Отправка в цикле");
+      let sendDocResult = await bot
+        .sendDocument(chatId, `${fileName}.pdf`)
+        .catch((error) => reject());
+      console.log('документ отправлен');
+      console.log(sendDocResult);
       await bot
         .sendMessage(
           chatId,
           `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
         )
         .catch((error) => reject());
-      }) 
-      console.log('Finish');
-    }
-
-    forEachWrap();
-
+    }))
 
     // await bd.forEach(async (chatId) => {
     //   // console.log("Отправка в цикле");
@@ -254,6 +251,8 @@ async function sendMessages(fileName, data) {
     //     )
     //     .catch((error) => reject());
     // });
+
+
     console.log("5");
     resolve();
   });
