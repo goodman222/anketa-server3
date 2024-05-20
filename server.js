@@ -1583,7 +1583,7 @@ async function sendFile(req, res) {
 
   try {
     console.log('7');
-    fs.unlink(`${fileName}.pdf`, (err) => {
+    await fs.promises.unlink(`${fileName}.pdf`, (err) => {
       console.log('8');
         if (err) throw err; // не удалось удалить файл
       });
