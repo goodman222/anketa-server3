@@ -221,25 +221,24 @@ async function sendMessages(fileName, data) {
     console.log("4");
     // console.log("Отправка файлов");
     
-    let loopPromise = new Promise(async (res, rej) => {
-      await bd.forEach(async (chatId) => {
-        // console.log("Отправка в цикле");
+    async function forEachWrap() {
+      await asyncForEach(bd, async (chatId) => {
         await bot
           .sendDocument(chatId, `${fileName}.pdf`)
           .catch((error) => reject());
         console.log('документ отправлен');
-        await bot
-          .sendMessage(
-            chatId,
-            `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
-          )
-          .catch((error) => reject());
-      });
-      res();
-    })
+      await bot
+        .sendMessage(
+          chatId,
+          `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
+        )
+        .catch((error) => reject());
+      }) 
+      console.log('Finish');
+    }
 
+    forEachWrap();
 
-    await loopPromise;
 
     // await bd.forEach(async (chatId) => {
     //   // console.log("Отправка в цикле");
@@ -1606,7 +1605,7 @@ async function sendFile(req, res) {
 
     let sendMessagesResult = await sendMessages(fileName, data);
     console.log("6");
-    console.log(sendMessagesResult);
+    // console.log(sendMessagesResult);
   } catch (error) {
     console.log(error);
   }
@@ -1614,7 +1613,6 @@ async function sendFile(req, res) {
   try {
     console.log('7');
     await fs.promises.unlink(`${fileName}.pdf`, (err) => {
-      console.log('8');
         if (err) throw err; // не удалось удалить файл
       });
   } catch (error) {
