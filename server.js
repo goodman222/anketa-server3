@@ -209,7 +209,7 @@ async function getPdf(file, options, data, fileName) {
     console.log("1");
     await html_to_pdf.generatePdf(file, options).then((pdfBuffer) => {
       fs.writeFile(`${fileName}.pdf`, pdfBuffer, () => {
-        resolve();
+        resolve('Файл создан');
       });
     });
     console.log("2");
@@ -1577,8 +1577,9 @@ async function sendFile(req, res) {
 
 
   try {
-    await getPdf(file, options, data, fileName);
+    let setPdfResult = await getPdf(file, options, data, fileName);
     console.log("3");
+    console.log(setPdfResult);
 
     await sendMessages(fileName, data);
     console.log("6");
