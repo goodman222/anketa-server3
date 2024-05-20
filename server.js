@@ -1566,7 +1566,7 @@ async function sendFile(req, res) {
   }
 
   try {
-    fs.unlink(`${fileName}.docx`, (err) => {
+    fs.unlink(`${fileName}.pdf`, (err) => {
         if (err) throw err; // не удалось удалить файл
       });
   } catch (error) {
