@@ -220,11 +220,8 @@ async function sendMessages(fileName, data) {
   return new Promise(async (resolve, reject) => {
     console.log("4");
     // console.log("Отправка файлов");
-    
-    console.log(bd);
 
-    await Promise.all(bd.forEach(async (chatId) => {
-      // console.log("Отправка в цикле");
+    for (const chatId of bd) {
       let sendDocResult = await bot
         .sendDocument(chatId, `${fileName}.pdf`)
         .catch((error) => reject());
@@ -236,7 +233,8 @@ async function sendMessages(fileName, data) {
           `${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value} отправил анкету!`
         )
         .catch((error) => reject());
-    }))
+    }
+
 
     // await bd.forEach(async (chatId) => {
     //   // console.log("Отправка в цикле");
