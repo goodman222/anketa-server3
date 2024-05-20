@@ -1555,15 +1555,31 @@ async function sendFile(req, res) {
   `,
   };
 
-  try {
-    await getPdf(file, options, data, fileName);
-    console.log("3");
+  let promise = new Promise(async (resolve, reject) => {
+    try {
+      await getPdf(file, options, data, fileName);
+      console.log("3");
+  
+      await sendMessages(fileName, data);
+      console.log("6");
+    } catch (error) {
+      console.log(error);
+    }
+    resolve();
+  });
 
-    await sendMessages(fileName, data);
-    console.log("6");
-  } catch (error) {
-    console.log(error);
-  }
+  await promise;
+
+
+  // try {
+  //   await getPdf(file, options, data, fileName);
+  //   console.log("3");
+
+  //   await sendMessages(fileName, data);
+  //   console.log("6");
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
   try {
     console.log('7');
