@@ -34,7 +34,10 @@ const resend = new Resend("re_dXr7UNHD_GrTKvEqKL2oJQ6C8nMbYCdut");
 //почты для отпаравки анкет
 const emailAddresses = [
 	"mark.khrarbyi.backup1@gmail.com",
-	"markhrabryi@mail.ru",
+	"cckbysibserv@yandex.ru",
+	"roman@suncheleev.ru",
+	"GaliullinaDR@NF.SibServ.com",
+	"KorablevaON@NF.SibServ.com",
 ];
 
 //Чтение с файла
@@ -246,7 +249,7 @@ async function sendEmail(fileName, data) {
 			attachments: [
 				{
 					content: attachment,
-					filename: `${fileName}.pdf`,
+					filename: `${fileName.slice(2)}.pdf`,
 				},
 			],
 		});
@@ -1610,15 +1613,15 @@ async function sendFile(req, res) {
 		console.log("error: " + error);
 	}
 
-	try {
-		// удаление файла
-		console.log("7");
-		await fs.promises.unlink(`${fileName}.pdf`, (err) => {
-			if (err) throw err; // не удалось удалить файл
-		});
-	} catch (error) {
-		console.log(error);
-	}
+	// try {
+	// 	// удаление файла
+	// 	console.log("7");
+	// 	await fs.promises.unlink(`${fileName}.pdf`, (err) => {
+	// 		if (err) throw err; // не удалось удалить файл
+	// 	});
+	// } catch (error) {
+	// 	console.log(error);
+	// }
 }
 
 app.post("/saveFile", (req, res) => sendFile(req, res));
