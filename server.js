@@ -18,7 +18,8 @@ import {
 	BorderStyle,
 } from "docx";
 import { error, log } from "console";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+import { fileURLToPath } from "url";
 
 console.log("serverStart");
 
@@ -28,19 +29,13 @@ const app = express();
 
 app.use(express.json());
 
-const transporter = nodemailer.createTransport({
-	host: "smtp.mail.ru",
-	port: 465,
-	secure: true, // SSL
-	auth: {
-		user: "hr.forms.ssk@mail.ru",
-		pass: "OIW9TQfWFqAjHvtnqDAE",
-	},
-});
-console.log("smtp test:");
+const resend = new Resend("re_dXr7UNHD_GrTKvEqKL2oJQ6C8nMbYCdut");
 
-await transporter.verify();
-console.log("SMTP OK");
+//почты для отпаравки анкет
+const emailAddresses = [
+	"mark.khrarbyi.backup1@gmail.com",
+	"markhrabryi@mail.ru",
+];
 
 //Чтение с файла
 
@@ -233,6 +228,34 @@ async function getPdf(file, options, data, fileName) {
 	});
 }
 
+//отправка анкеты на почту
+async function sendEmail(fileName, data) {
+	return new Promise(async (resolve, reject) => {
+		const __filename = fileURLToPath(import.meta.url);
+		const __dirname = path.dirname(__filename);
+		const filepath = path.join(__dirname, `${fileName}.pdf`);
+		console.log(`filepath: ${filepath}`);
+
+		const attachment = fs.readFileSync(filepath).toString("base64");
+
+		let sendMailResult = await resend.emails.send({
+			from: "forms@xn----8sbatwcu2aaq.xn--p1ai",
+			to: emailAddresses,
+			subject: `Анкета ${data.personal.name.value} ${data.personal.surname.value} ${data.personal.lastName.value}`,
+			html: `<p>Сообщение создано автоматически сервисом «Анкеты ССК» (Акционерное общество «Сибирская Сервисная Компания»)</p>`,
+			attachments: [
+				{
+					content: attachment,
+					filename: `${fileName}.pdf`,
+				},
+			],
+		});
+		resolve();
+		console.log(sendMailResult);
+	});
+}
+
+//отправка анкеты в тг
 async function sendMessages(fileName, data) {
 	return new Promise(async (resolve, reject) => {
 		console.log("4");
@@ -252,21 +275,6 @@ async function sendMessages(fileName, data) {
 
 		console.log("5");
 		resolve();
-	});
-}
-
-async function sendMail() {
-	await transporter.sendMail({
-		from: `hr.forms.ssk@mail.ru`,
-		to: "mark.hrabryi90@gmail.com",
-		subject: `Анкета: `,
-		text: ` отправил анкету!`,
-		// attachments: [
-		// 	{
-		// 		filename: `${name}.pdf`,
-		// 		path: pdfPath,
-		// 	},
-		// ],
 	});
 }
 
@@ -1592,9 +1600,10 @@ async function sendFile(req, res) {
 
 	try {
 		let setPdfResult = await getPdf(file, options, data, fileName);
-		console.log("3");
+		console.log(`3: ${fileName}`);
 		console.log("setpdfResult " + setPdfResult);
-		await sendMail();
+		await sendEmail(fileName, data);
+
 		let sendMessagesResult = await sendMessages(fileName, data);
 		console.log("6");
 	} catch (error) {
@@ -1602,6 +1611,7 @@ async function sendFile(req, res) {
 	}
 
 	try {
+		// удаление файла
 		console.log("7");
 		await fs.promises.unlink(`${fileName}.pdf`, (err) => {
 			if (err) throw err; // не удалось удалить файл
